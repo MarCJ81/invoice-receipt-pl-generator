@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Invoice, Receipt &amp; P&amp;L Generator — Print or Save as PDF</title>
+<meta name="description" content="Make a professional invoice, receipt, quote or freelance profit and loss statement in your browser. Live A4 preview, 7 currencies, tax and discount math, print or save as PDF. No signup, nothing uploaded.">
+<link rel="canonical" href="https://marcj81.github.io/invoice-receipt-pl-generator/">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0e7c66">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Invoice &amp; P&amp;L Generator">
+<meta property="og:title" content="Free Invoice, Receipt &amp; P&amp;L Generator">
+<meta property="og:description" content="Invoice, receipt, quote and profit-and-loss statements with a live A4 preview. Print or save as PDF — everything stays in your browser.">
+<meta property="og:url" content="https://marcj81.github.io/invoice-receipt-pl-generator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Invoice, Receipt &amp; P&amp;L Generator">
+<meta name="twitter:description" content="Fill in the form, see the finished page, print to PDF. No account, no upload.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Invoice, Receipt & P&L Generator",
+      "url": "https://marcj81.github.io/invoice-receipt-pl-generator/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any browser",
+      "browserRequirements": "Requires JavaScript",
+      "description": "Create invoices, receipts, quotes and freelance profit and loss statements in the browser, with a live A4 preview and print-to-PDF output. Amounts, tax, discounts and margins are calculated exactly in integer cents.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "featureList": [
+        "Invoice, receipt and quote documents from one form",
+        "Live A4 and Letter paper preview",
+        "Seven currencies with correct decimal places",
+        "Percentage or fixed discounts and tax rates",
+        "Freelancer profit and loss statement",
+        "Expense breakdown chart and CSV export",
+        "Print or save as PDF without a watermark"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this invoice generator really free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Every feature on this page is free and there is no account, no trial and no watermark on the printed document. The page is funded by advertising, so no payment details are ever requested."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where does my invoice data go?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nowhere. The form, the logo image and the PDF all stay in your browser's memory. Nothing is uploaded, there is no server behind the tool, and you can keep working with the network offline once the page has loaded."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I save the invoice as a PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Press Print / Save as PDF and choose \"Save as PDF\" as the printer. The print stylesheet removes the editor, buttons, navigation and background so only the document page is printed, in A4 or Letter as selected."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it support tax, VAT and discounts?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can apply a percentage or a fixed discount, add a tax or VAT rate with your own label, and record an amount already paid. Tax is calculated on the discounted subtotal and the remaining balance is shown on the document."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which currencies can I use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "US dollars, euros, pounds sterling, Canadian dollars, Australian dollars, Japanese yen and Korean won. Yen and won are shown without decimals and all other currencies with two, using correct thousands separators."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I reuse an invoice next month?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Export JSON keeps every field, so you can import the file later, change the dates and amounts, and print again. Save draft stores the same data in your own browser so the form is still filled when you come back."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#app">Skip to the generator</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="./">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect x="5" y="3" width="22" height="26" rx="3.5" fill="currentColor" opacity=".16"></rect>
+        <rect x="5" y="3" width="22" height="26" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"></rect>
+        <path d="M10 11h12M10 16h12M10 21h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <span class="brand-text">Invoice&nbsp;&amp;&nbsp;P&amp;L<small>Generator</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Page sections">
+      <a href="#how-it-works">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch colour theme" aria-pressed="false">
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"></circle><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6 6l-1.6-1.6M19.6 19.6L18 18M18 6l1.6-1.6M4.4 19.6L6 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.4A8.4 8.4 0 0 1 9.6 4a8.4 8.4 0 1 0 10.4 10.4z" fill="currentColor"></path></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Free · No sign-up · Nothing uploaded</p>
+      <h1>Free invoice, receipt &amp; profit-and-loss generator</h1>
+      <p class="lede">Fill in one form and watch a real A4 page build itself: invoice, paid receipt, quote or a freelancer P&amp;L statement. Amounts, discounts, tax and margins are worked out to the cent, and <b>Print / Save as PDF</b> gives you a clean file with no watermark.</p>
+      <ul class="hero-badges">
+        <li>100% in your browser</li>
+        <li>7 currencies</li>
+        <li>A4 &amp; Letter</li>
+        <li>Print-ready PDF</li>
+      </ul>
+    </div>
+    <div class="hero-card" aria-hidden="true">
+      <div class="mini-paper">
+        <div class="mini-row"><span class="mini-dot"></span><span class="mini-line w60"></span></div>
+        <div class="mini-row"><span class="mini-line w40"></span><span class="mini-line w20 right"></span></div>
+        <div class="mini-row"><span class="mini-line w52"></span><span class="mini-line w20 right"></span></div>
+        <div class="mini-total"><span class="mini-line w30"></span><span class="mini-line w26 right strong"></span></div>
+        <span class="mini-stamp">PAID</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="app-shell" id="app" aria-label="Invoice and profit and loss generator">
+    <div class="tabs" role="tablist" aria-label="Document type">
+      <button class="tab is-active" id="tab-doc" role="tab" type="button" aria-selected="true" aria-controls="panel-doc">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 3.5h7l4 4v13H7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M10 12h5M10 15.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>
+        Invoice · Receipt · Quote
+      </button>
+      <button class="tab" id="tab-pl" role="tab" type="button" aria-selected="false" aria-controls="panel-pl">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 19.5V5M4 19.5h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path><rect x="7" y="11" width="3.2" height="5.6" fill="currentColor"></rect><rect x="12.4" y="8" width="3.2" height="8.6" fill="currentColor"></rect><rect x="17.8" y="13.6" width="2.6" height="3" fill="currentColor"></rect></svg>
+        Freelancer P&amp;L
+      </button>
+      <span class="tabs-spacer"></span>
+      <span class="badge" id="sample-badge" hidden>Sample data</span>
+      <span class="badge badge-draft" id="draft-badge" hidden>Draft restored</span>
+    </div>
+
+    <!-- ============================== DOCUMENT ============================== -->
+    <div class="workspace" id="panel-doc" role="tabpanel" aria-labelledby="tab-doc" data-mobile-view="edit">
+      <div class="mobile-switch" role="group" aria-label="Editor or preview">
+        <button type="button" class="is-active" data-view="edit">Edit</button>
+        <button type="button" data-view="preview">Preview</button>
+      </div>
+
+      <form class="editor" id="doc-form" autocomplete="off" novalidate>
+        <fieldset class="group">
+          <legend>Document</legend>
+          <div class="segmented" id="doc-kind" role="group" aria-label="Document type">
+            <button type="button" data-kind="INVOICE" class="is-active">Invoice</button>
+            <button type="button" data-kind="RECEIPT">Receipt</button>
+            <button type="button" data-kind="QUOTE">Quote</button>
+          </div>
+          <div class="grid-2">
+            <label class="field">
+              <span class="field-label">Currency</span>
+              <select id="currency" data-model="currency">
+                <option value="USD">$ USD — US dollar</option>
+                <option value="EUR">€ EUR — Euro</option>
+                <option value="GBP">£ GBP — British pound</option>
+                <option value="CAD">C$ CAD — Canadian dollar</option>
+                <option value="AUD">A$ AUD — Australian dollar</option>
+                <option value="JPY">¥ JPY — Japanese yen</option>
+                <option value="KRW">₩ KRW — Korean won</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label">Paper size</span>
+              <select id="paper" data-model="paper">
+                <option value="a4">A4 — 210 × 297 mm</option>
+                <option value="letter">Letter — 8.5 × 11 in</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label">Document number</span>
+              <input id="doc-number" type="text" data-model="number" placeholder="INV-2026-0142" maxlength="40">
+            </label>
+            <label class="field">
+              <span class="field-label">Issue date</span>
+              <input id="issue-date" type="date" data-model="issueDate">
+            </label>
+            <label class="field">
+              <span class="field-label" id="due-label">Due date</span>
+              <input id="due-date" type="date" data-model="dueDate">
+            </label>
+            <div class="field logo-field">
+              <span class="field-label">Logo <span class="hint-inline">PNG, JPG or SVG</span></span>
+              <div class="logo-row">
+                <label class="logo-pick">
+                  <input id="logo-input" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp">
+                  <span>Choose image</span>
+                </label>
+                <button type="button" class="btn btn-quiet" id="logo-clear" hidden>Remove</button>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>From</legend>
+          <div class="grid-2">
+            <label class="field">
+              <span class="field-label">Business or your name</span>
+              <input id="from-name" type="text" data-model="from.name" placeholder="Northlight Studio">
+            </label>
+            <label class="field">
+              <span class="field-label">Email</span>
+              <input id="from-email" type="email" data-model="from.email" placeholder="hello@studio.com">
+            </label>
+            <label class="field">
+              <span class="field-label">Phone</span>
+              <input id="from-phone" type="tel" data-model="from.phone" placeholder="+1 (415) 555-0148">
+            </label>
+            <label class="field">
+              <span class="field-label">Tax / VAT ID <span class="hint-inline">optional</span></span>
+              <input id="from-tax" type="text" data-model="from.taxId" placeholder="EIN 84-1120933">
+            </label>
+          </div>
+          <label class="field">
+            <span class="field-label">Address</span>
+            <textarea id="from-address" rows="3" data-model="from.address" placeholder="Street, city, postal code, country"></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Bill to</legend>
+          <div class="grid-2">
+            <label class="field">
+              <span class="field-label">Client or company</span>
+              <input id="bill-name" type="text" data-model="billTo.name" placeholder="Harbor &amp; Pine Co.">
+            </label>
+            <label class="field">
+              <span class="field-label">Contact person <span class="hint-inline">optional</span></span>
+              <input id="bill-contact" type="text" data-model="billTo.contact" placeholder="Dana Whitfield">
+            </label>
+            <label class="field">
+              <span class="field-label">Email <span class="hint-inline">optional</span></span>
+              <input id="bill-email" type="email" data-model="billTo.email" placeholder="ap@client.com">
+            </label>
+          </div>
+          <label class="field">
+            <span class="field-label">Address</span>
+            <textarea id="bill-address" rows="3" data-model="billTo.address" placeholder="Street, city, postal code, country"></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Line items</legend>
+          <div class="items" id="items">
+            <div class="items-head" aria-hidden="true">
+              <span>Description</span><span>Qty</span><span>Unit price</span><span class="ta-right">Amount</span><span></span>
+            </div>
+            <div id="items-body"></div>
+          </div>
+          <div class="row-between">
+            <button type="button" class="btn btn-dashed" id="add-item">+ Add line item</button>
+            <p class="hint" id="items-hint">Amounts update as you type.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Discount, tax &amp; payment</legend>
+          <div class="grid-3">
+            <label class="field">
+              <span class="field-label">Discount</span>
+              <select id="discount-mode" data-model="discount.mode">
+                <option value="none">None</option>
+                <option value="percent">Percentage</option>
+                <option value="fixed">Fixed amount</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label">Discount value</span>
+              <span class="affix-field">
+                <span class="affix" id="discount-affix">%</span>
+                <input id="discount-value" type="text" inputmode="decimal" data-model="discount.value" placeholder="0" disabled>
+              </span>
+            </label>
+            <label class="field">
+              <span class="field-label">Amount paid</span>
+              <span class="affix-field">
+                <span class="affix" data-currency-affix>$</span>
+                <input id="amount-paid" type="text" inputmode="decimal" data-model="amountPaid" placeholder="0.00">
+              </span>
+            </label>
+            <label class="field">
+              <span class="field-label">Tax label</span>
+              <input id="tax-label" type="text" data-model="tax.label" placeholder="Tax" maxlength="24">
+            </label>
+            <label class="field">
+              <span class="field-label">Tax rate</span>
+              <span class="affix-field">
+                <input id="tax-rate" type="text" inputmode="decimal" data-model="tax.rate" placeholder="0">
+                <span class="affix affix-end">%</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Notes</legend>
+          <label class="field">
+            <span class="field-label">Note to the client</span>
+            <textarea id="notes" rows="2" data-model="notes" placeholder="Thank you for your business."></textarea>
+          </label>
+          <label class="field">
+            <span class="field-label">Payment terms</span>
+            <textarea id="terms" rows="2" data-model="terms" placeholder="Payment due within 14 days."></textarea>
+          </label>
+        </fieldset>
+
+        <div class="editor-actions">
+          <button type="button" class="btn btn-primary" id="btn-print-doc">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 9V3.5h10V9M7 18H4.5V9h15v9H17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><rect x="7" y="14" width="10" height="6.5" fill="none" stroke="currentColor" stroke-width="1.8"></rect></svg>
+            Print / Save as PDF
+          </button>
+          <button type="button" class="btn" id="btn-sample">Load sample</button>
+          <button type="button" class="btn" id="btn-save-draft">Save draft</button>
+          <button type="button" class="btn" id="btn-export">Export JSON</button>
+          <button type="button" class="btn" id="btn-import">Import JSON</button>
+          <input type="file" id="import-file" accept="application/json,.json" hidden>
+          <button type="button" class="btn btn-quiet" id="btn-clear">Clear</button>
+        </div>
+
+        <div class="total-strip" aria-live="polite">
+          <span>Total <b id="strip-total">$0.00</b></span>
+          <span><span id="balance-label">Balance due</span> <b id="strip-balance">$0.00</b></span>
+        </div>
+        <p class="form-warning" id="doc-error" role="status" hidden></p>
+      </form>
+
+      <aside class="preview" aria-label="Document preview">
+        <div class="preview-bar">
+          <span class="preview-title">Preview</span>
+          <span class="preview-meta" id="preview-meta">A4 · 210 × 297 mm</span>
+          <button type="button" class="btn btn-small btn-primary" id="btn-print-doc-top">Print / PDF</button>
+        </div>
+        <div class="paper-stage" id="stage-doc">
+          <article class="paper" id="paper-doc" aria-label="Invoice preview"></article>
+        </div>
+        <p class="preview-note">Printing keeps only this page — the editor, navigation and page background are dropped automatically.</p>
+      </aside>
+    </div>
+
+    <!-- ================================= P&L ================================= -->
+    <div class="workspace" id="panel-pl" role="tabpanel" aria-labelledby="tab-pl" data-mobile-view="edit" hidden>
+      <div class="mobile-switch" role="group" aria-label="Editor or preview">
+        <button type="button" class="is-active" data-view="edit">Edit</button>
+        <button type="button" data-view="preview">Preview</button>
+      </div>
+
+      <div class="metrics" id="metrics" aria-live="polite">
+        <div class="metric">
+          <span class="metric-label">Gross revenue</span>
+          <b class="metric-value" id="m-gross">$0.00</b>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Total expenses</span>
+          <b class="metric-value" id="m-expenses">$0.00</b>
+        </div>
+        <div class="metric" id="card-net">
+          <span class="metric-label">Net profit</span>
+          <b class="metric-value" id="m-net">$0.00</b>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Profit margin</span>
+          <b class="metric-value" id="m-margin">&mdash;</b>
+        </div>
+      </div>
+
+      <form class="editor" id="pl-form" autocomplete="off" novalidate>
+        <fieldset class="group">
+          <legend>Statement</legend>
+          <div class="grid-2">
+            <label class="field">
+              <span class="field-label">Business name</span>
+              <input id="pl-business" type="text" data-model="business" placeholder="Northlight Studio">
+            </label>
+            <label class="field">
+              <span class="field-label">Currency</span>
+              <select id="pl-currency" data-model="currency">
+                <option value="USD">$ USD — US dollar</option>
+                <option value="EUR">€ EUR — Euro</option>
+                <option value="GBP">£ GBP — British pound</option>
+                <option value="CAD">C$ CAD — Canadian dollar</option>
+                <option value="AUD">A$ AUD — Australian dollar</option>
+                <option value="JPY">¥ JPY — Japanese yen</option>
+                <option value="KRW">₩ KRW — Korean won</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label">Period</span>
+              <select id="pl-period">
+                <option value="month">This month</option>
+                <option value="quarter">This quarter</option>
+                <option value="year">This year</option>
+                <option value="custom">Custom range</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label">Period label</span>
+              <input id="pl-label" type="text" data-model="periodLabel" maxlength="48">
+            </label>
+            <label class="field">
+              <span class="field-label">Start date</span>
+              <input id="pl-start" type="date" data-model="startDate">
+            </label>
+            <label class="field">
+              <span class="field-label">End date</span>
+              <input id="pl-end" type="date" data-model="endDate">
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Revenue</legend>
+          <div class="rows" id="rev-rows"></div>
+          <button type="button" class="btn btn-dashed" id="add-revenue">+ Add revenue line</button>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Expenses</legend>
+          <div class="rows" id="exp-rows"></div>
+          <button type="button" class="btn btn-dashed" id="add-expense">+ Add expense</button>
+        </fieldset>
+
+        <div class="editor-actions">
+          <button type="button" class="btn btn-primary" id="btn-print-pl">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 9V3.5h10V9M7 18H4.5V9h15v9H17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><rect x="7" y="14" width="10" height="6.5" fill="none" stroke="currentColor" stroke-width="1.8"></rect></svg>
+            Print / Save as PDF
+          </button>
+          <button type="button" class="btn" id="btn-csv">Download CSV</button>
+          <span class="bom-toggle">
+            <input id="csv-bom" type="checkbox" checked>
+            <label for="csv-bom">Excel BOM</label>
+          </span>
+          <button type="button" class="btn" id="btn-pl-sample">Load sample</button>
+          <button type="button" class="btn" id="btn-save-draft-pl">Save draft</button>
+          <button type="button" class="btn btn-quiet" id="btn-pl-clear">Clear</button>
+        </div>
+        <p class="form-warning" id="pl-error" role="status" hidden></p>
+      </form>
+
+      <aside class="preview" aria-label="Statement preview">
+        <div class="card chart-card">
+          <div class="card-head">
+            <h2>Expenses by category</h2>
+            <span class="card-meta" id="chart-meta">0 categories</span>
+          </div>
+          <div id="chart-body" class="chart-body"></div>
+          <p class="chart-empty" id="chart-empty">Add an expense to see where the money goes.</p>
+        </div>
+
+        <div class="preview-bar">
+          <span class="preview-title">Statement preview</span>
+          <span class="preview-meta" id="pl-preview-meta">A4 · 210 × 297 mm</span>
+          <button type="button" class="btn btn-small btn-primary" id="btn-print-pl-top">Print / PDF</button>
+        </div>
+        <div class="paper-stage" id="stage-pl">
+          <article class="paper" id="paper-pl" aria-label="Profit and loss preview"></article>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" id="how-it-works">
+    <div class="section-head">
+      <h2>How it works</h2>
+      <p>Three steps, no account.</p>
+    </div>
+    <ol class="steps">
+      <li>
+        <span class="step-num">1</span>
+        <h3>Pick the document</h3>
+        <p>Invoice for work you are billing, receipt for money already received, quote for work you are proposing, or a P&amp;L statement for your books.</p>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <h3>Type the details</h3>
+        <p>Your details, the client's, the line items and any discount or tax. The page on the right updates on every keystroke, in the currency you choose.</p>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <h3>Print or save as PDF</h3>
+        <p>One click opens the browser's print dialog. Choose "Save as PDF" and you get a clean page with no buttons, ads or watermark on it.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="section" id="features">
+    <div class="section-head">
+      <h2>What you can make</h2>
+      <p>Built for freelancers, contractors and one-person studios.</p>
+    </div>
+    <div class="feature-grid">
+      <article class="feature">
+        <h3>Invoice with a balance due</h3>
+        <p>Subtotal, discount, tax and an amount already paid roll up into the exact figure still owed — with correct rounding even on fractional hours.</p>
+      </article>
+      <article class="feature">
+        <h3>Paid receipt</h3>
+        <p>Switch the document type and the page becomes a receipt with a PAID stamp and the payment date, ready to hand over.</p>
+      </article>
+      <article class="feature">
+        <h3>Quote with a validity date</h3>
+        <p>Send a priced proposal that shows how long the offer stands, using the same items and tax rules as your invoices.</p>
+      </article>
+      <article class="feature">
+        <h3>Freelancer P&amp;L</h3>
+        <p>List revenue and categorised expenses for a month, quarter or year. Net profit and margin are computed for you, and a loss is shown in red.</p>
+      </article>
+      <article class="feature">
+        <h3>Category chart and CSV</h3>
+        <p>See which expense category takes the biggest bite, then download the whole statement as CSV for your spreadsheet or accountant.</p>
+      </article>
+      <article class="feature">
+        <h3>Reuse it next month</h3>
+        <p>Export the document as JSON, import it later, change the dates and figures, and print again. Nothing to retype, nothing to sign up for.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="section-head">
+      <h2>Frequently asked questions</h2>
+    </div>
+    <div class="faq">
+      <details class="faq-item" open>
+        <summary>Is this invoice generator really free?</summary>
+        <p>Yes. Every feature on this page is free and there is no account, no trial and no watermark on the printed document. The page is funded by advertising, so no payment details are ever requested.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Where does my invoice data go?</summary>
+        <p>Nowhere. The form, the logo image and the PDF all stay in your browser's memory. Nothing is uploaded, there is no server behind the tool, and you can keep working with the network offline once the page has loaded.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How do I save the invoice as a PDF?</summary>
+        <p>Press <b>Print / Save as PDF</b> and choose "Save as PDF" as the printer. The print stylesheet removes the editor, buttons, navigation and background so only the document page is printed, in A4 or Letter as selected.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does it support tax, VAT and discounts?</summary>
+        <p>Yes. You can apply a percentage or a fixed discount, add a tax or VAT rate with your own label, and record an amount already paid. Tax is calculated on the discounted subtotal and the remaining balance is shown on the document.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Which currencies can I use?</summary>
+        <p>US dollars, euros, pounds sterling, Canadian dollars, Australian dollars, Japanese yen and Korean won. Yen and won are shown without decimals and all other currencies with two, using correct thousands separators.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I reuse an invoice next month?</summary>
+        <p>Yes. Export JSON keeps every field, so you can import the file later, change the dates and amounts, and print again. Save draft stores the same data in your own browser so the form is still filled when you come back.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="section note-section">
+    <p class="fine-print">This tool produces a document; it is not accounting, tax or legal advice. Tax rules, invoice requirements and retention periods differ by country — check what applies to you before sending.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>Invoice &amp; P&amp;L Generator — a small, free tool that runs entirely in your browser.</p>
+    <nav aria-label="Footer">
+      <a href="privacy.html">Privacy</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<noscript>
+  <div class="noscript">This generator needs JavaScript. Nothing would be uploaded in any case — all of the work happens on your device.</div>
+</noscript>
+
+<script src="assets/ledger.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

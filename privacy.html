@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy policy — Invoice, Receipt &amp; P&amp;L Generator</title>
+<meta name="description" content="How this invoice and P&L generator handles your data: everything is processed locally in your browser, nothing is uploaded, and drafts stay in your own browser storage.">
+<link rel="canonical" href="https://marcj81.github.io/invoice-receipt-pl-generator/privacy.html">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0e7c66">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="./">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect x="5" y="3" width="22" height="26" rx="3.5" fill="currentColor" opacity=".16"></rect>
+        <rect x="5" y="3" width="22" height="26" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"></rect>
+        <path d="M10 11h12M10 16h12M10 21h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <span class="brand-text">Invoice&nbsp;&amp;&nbsp;P&amp;L<small>Generator</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Page sections">
+      <a href="index.html">Generator</a>
+      <a href="index.html#how-it-works">How it works</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+    <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch colour theme" aria-pressed="false">
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"></circle><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6 6l-1.6-1.6M19.6 19.6L18 18M18 6l1.6-1.6M4.4 19.6L6 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.4A8.4 8.4 0 0 1 9.6 4a8.4 8.4 0 1 0 10.4 10.4z" fill="currentColor"></path></svg>
+    </button>
+  </div>
+</header>
+
+<main class="legal">
+  <p class="eyebrow">Privacy</p>
+  <h1>Privacy policy</h1>
+  <p class="legal-meta">Invoice, Receipt &amp; P&amp;L Generator · last updated 19 November 2026</p>
+
+  <p class="legal-lede">The short version: everything you type stays in your browser. There is no account, no upload and no server behind this page that could receive your documents.</p>
+
+  <h2>Nothing is uploaded</h2>
+  <p>This tool is a single page that runs entirely in your browser. The details you enter, the line items, the amounts and the logo you choose are read with JavaScript on your own computer and are never sent anywhere.</p>
+  <ul>
+    <li>The logo image is read with the browser's <code>FileReader</code> and kept in memory as a data URL for the preview and the printout.</li>
+    <li>All totals, tax, discount and profit figures are computed in the page itself, in integer cents. Nothing is logged.</li>
+    <li>A JSON or CSV export is created by your browser and written to your own Downloads folder.</li>
+    <li>The page keeps working with no network connection once it has loaded.</li>
+  </ul>
+
+  <h2>Draft stored in your browser</h2>
+  <p>If you press <b>Save draft</b>, the current form is written to your browser's <code>localStorage</code> under the key <code>invoice-pl:draft:v1</code>, so it is still there when you come back. That copy never leaves your device, and <b>Clear</b> removes it. Your theme choice is stored under <code>invoice-pl:theme</code> in the same way. You can delete both by clearing site data in your browser settings.</p>
+
+  <h2>Advertising and cookies</h2>
+  <p>This tool does not currently display advertising. If advertising is added in the future, third-party vendors including Google may use cookies to serve ads based on a visit to this site or other sites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to this site and/or other sites on the internet. You can opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" rel="noopener">Google Ads Settings</a>. Any such change will be described on this page before it takes effect.</p>
+  <p>Because the contents of a document never leave the page, no advertising or analytics system on this site can see what you typed into it.</p>
+
+  <h2>Children</h2>
+  <p>This tool is intended for business use by adults and is not directed at children under 13.</p>
+
+  <h2>Your rights</h2>
+  <p>Since no personal data is collected or stored by this site, there is no stored record to access, correct or delete. Any draft in <code>localStorage</code> is under your control and can be removed from your browser at any time.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about this policy: <b>contact@example.com</b></p>
+  <p class="fine-print">This contact address is a placeholder in the repository — replace it with your own before publishing.</p>
+
+  <p class="legal-back"><a href="index.html">&larr; Back to the generator</a></p>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>Invoice &amp; P&amp;L Generator — a small, free tool that runs entirely in your browser.</p>
+    <nav aria-label="Footer">
+      <a href="index.html">Generator</a>
+      <a href="index.html#faq">FAQ</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function () {
+  var KEY = 'invoice-pl:theme';
+  var saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) { /* ignore */ }
+  if (saved !== 'light' && saved !== 'dark') {
+    saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  var root = document.documentElement;
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    var btn = document.getElementById('theme-toggle');
+    btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+  }
+  apply(saved);
+  document.getElementById('theme-toggle').addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    apply(next);
+    try { localStorage.setItem(KEY, next); } catch (e) { /* ignore */ }
+  });
+})();
+</script>
+</body>
+</html>
