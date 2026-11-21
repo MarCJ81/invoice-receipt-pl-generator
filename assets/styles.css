@@ -253,7 +253,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   height: 320px;
   background: #fff;
   border-radius: 6px;
-  border: 1px solid #e3e8ea;
+  border: 1px solid #E7E8EA;
   box-shadow: 0 2px 4px rgba(15, 23, 32, .06), 0 26px 40px -26px rgba(15, 23, 32, .45);
   padding: 26px 22px;
   display: flex;
@@ -263,15 +263,15 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 .mini-row { display: flex; align-items: center; gap: 8px; }
 .mini-dot { width: 16px; height: 16px; border-radius: 4px; background: #2F5BFF; opacity: .85; }
-.mini-line { height: 7px; border-radius: 4px; background: #e6ecee; display: block; }
-.mini-line.strong { background: #cbd8d3; }
+.mini-line { height: 7px; border-radius: 4px; background: #E7E8EA; display: block; }
+.mini-line.strong { background: #CBD0D6; }
 .mini-line.right { margin-left: auto; }
 .w20 { width: 20%; } .w26 { width: 26%; } .w30 { width: 30%; }
 .w40 { width: 40%; } .w52 { width: 52%; } .w60 { width: 60%; }
 .mini-total {
   margin-top: auto;
   padding-top: 14px;
-  border-top: 1.5px solid #e6ecee;
+  border-top: 1.5px solid #E7E8EA;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -746,7 +746,7 @@ input[type="date"] { min-height: 36px; }
   gap: 26px;
   margin-top: 30px;
   padding-top: 18px;
-  border-top: 1.5px solid #e2e8eb;
+  border-top: 1.5px solid #E7E8EA;
 }
 .p-label {
   display: block;
@@ -770,7 +770,7 @@ input[type="date"] { min-height: 36px; }
   gap: 10px;
   margin-top: 4px;
   padding-top: 9px;
-  border-top: 1.5px solid #e2e8eb;
+  border-top: 1.5px solid #E7E8EA;
   font-size: 11.5px;
   color: #33424e;
 }
@@ -785,12 +785,12 @@ input[type="date"] { min-height: 36px; }
   text-transform: uppercase;
   color: #5B6771;
   padding: 0 0 8px;
-  border-bottom: 1.5px solid #cfd8dd;
+  border-bottom: 1.5px solid #D7D9DD;
 }
 .p-items th.num, .p-items td.num { text-align: right; }
 .p-items td {
   padding: 9px 0;
-  border-bottom: 1px solid #eef2f4;
+  border-bottom: 1px solid #F0F1F3;
   vertical-align: top;
   font-size: 12.5px;
 }
@@ -820,7 +820,7 @@ input[type="date"] { min-height: 36px; }
 .p-totals td { text-align: right; font-variant-numeric: tabular-nums; font-size: 12.5px; padding: 5px 0; white-space: nowrap; }
 .p-totals tr.sub th, .p-totals tr.sub td { color: #101a21; font-weight: 600; }
 .p-totals tr.grand th, .p-totals tr.grand td {
-  border-top: 1.5px solid #cfd8dd;
+  border-top: 1.5px solid #D7D9DD;
   padding-top: 10px;
   margin-top: 6px;
   font-size: 14px;
@@ -833,7 +833,7 @@ input[type="date"] { min-height: 36px; }
 .p-foot {
   margin-top: auto;
   padding-top: 18px;
-  border-top: 1px solid #eef2f4;
+  border-top: 1px solid #F0F1F3;
   font-size: 10.5px;
   color: #5B6771;
   display: flex;
@@ -852,7 +852,7 @@ input[type="date"] { min-height: 36px; }
   text-transform: uppercase;
   color: #5B6771;
   padding-bottom: 6px;
-  border-bottom: 1.5px solid #cfd8dd;
+  border-bottom: 1.5px solid #D7D9DD;
   margin-bottom: 4px;
 }
 .pl-line {
@@ -872,7 +872,7 @@ input[type="date"] { min-height: 36px; }
   font-size: 12px;
   font-weight: 700;
   color: #101a21;
-  border-top: 1.5px solid #e2e8eb;
+  border-top: 1.5px solid #E7E8EA;
   margin-top: 4px;
 }
 .pl-subtotal b { font-variant-numeric: tabular-nums; }
