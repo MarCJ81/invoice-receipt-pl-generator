@@ -12,7 +12,7 @@
 
 ```
 index.html                    앱 본체 + SEO 정적 콘텐츠(H1·How-to·FAQ 6문항·JSON-LD)
-privacy.html                  개인정보처리방침 (애드센스 심사 대비, 연락처 자리표시자)
+privacy.html                  개인정보처리방침 (애드센스 심사 대비, 연락처 goodday810202@gmail.com)
 robots.txt  sitemap.xml       검색엔진 기본 골격 (canonical/sitemap URL: https://marcj81.github.io/invoice-receipt-pl-generator/)
 favicon.svg  .nojekyll
 assets/
@@ -99,7 +99,7 @@ python3 uitest.py
 3. 공개 전에 아래 3곳만 실제 값으로 바꾸세요.
    - `index.html`·`privacy.html`의 `canonical`, OG `og:url`
    - `sitemap.xml`, `robots.txt`의 URL
-   - `privacy.html`의 `contact@example.com` → 실제 연락 이메일
+   - `privacy.html`의 연락처 — `goodday810202@gmail.com`으로 설정됨
 4. 애드센스 승인 후 `privacy.html`의 "Advertising and cookies" 문단을 실제 사용 여부에 맞게 갱신하고, 광고 스크립트를 넣더라도 문서 데이터는 여전히 로컬에서만 처리됩니다.
 
 ## 참고
