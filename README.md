@@ -21,7 +21,7 @@ assets/
   app.js                      UI 배선(폼, 품목 행, 미리보기 렌더, 로고, 인쇄, 내보내기, 임시저장)
   fonts/inter-latin*.woff2    Inter 가변 폰트 라틴 서브셋 (SIL OFL, CDN 아님)
 test.js                       Node 단위 테스트 57개
-uitest.py                     Playwright 실제 Chrome 검수 190항목 + 실제 PDF 검사 + 스크린샷
+uitest.py                     Playwright 실제 Chrome 검수 191항목 + 실제 PDF 검사 + 스크린샷
 preview-desktop.png           데스크톱 1280×800 (에디터 + A4 미리보기)
 preview-desktop-full.png      데스크톱 전체 페이지
 preview-paper.png             문서 용지 확대
@@ -49,7 +49,7 @@ preview-dark.png / -pl.png    다크 테마
 - **계산 순서**: 행 금액 → 소계 → 할인(%, 고정금액, 소계 초과 시 소계까지만) → 과세표준 → 세금(과세표준 기준) → 합계 → 기납부금 → 잔액. 모든 단계가 정수 연산입니다.
   할인 33.3333%, 세금 8.875% 같은 값도 0.01 단위에서 사사오입하며, `0.1 + 0.2`가 정확히 `0.30`이 됩니다.
 - **입력 검증**: 숫자가 아닌 값("12x", "6o0")이 들어오면 합계 영역 아래에 `Line 2: unit price "6o0" is not a number.` 같은 경고를 띄우고, 그 행은 0으로 계산합니다(조용히 틀린 금액이 나가지 않도록).
-- **음수 수량·단가**: `-2`처럼 음수를 넣으면 그 입력란 바로 아래에 `Quantity must be 0 or more — negative numbers are not allowed.`가 뜨고 입력란에 경고 테두리·`aria-invalid`가 붙습니다. 합계는 0으로 보정되며 합계 영역에도 같은 이유가 표시됩니다.
+- **음수 수량·단가**: `-2`처럼 음수를 넣으면 그 입력란 바로 아래에 `Quantity must be 0 or more — negative numbers are not allowed.`가 뜨고 입력란에 경고 테두리·`aria-invalid`가 붙습니다. 합계는 0으로 보정되며 합계 영역에도 같은 이유가 표시됩니다. 출력물(용지)에는 음수 대신 `0`이 찍힙니다.
 - **메모·결제 안내**: 용지 노트와 하단 결제 조건.
 - **실시간 A4/Letter 프리뷰**: 화면 폭에 맞춰 자동 축소(scale)되며, 모바일에서는 `Edit | Preview` 전환으로 용지를 크게 봅니다.
 - **Print / Save as PDF**: `@media print`에서 헤더·히어로·탭·에디터·버튼·차트·배경을 모두 제거하고 **용지만** 인쇄합니다. `@page` 크기는 선택한 A4/Letter에 맞춰 JS가 주입합니다.
@@ -80,7 +80,7 @@ preview-dark.png / -pl.png    다크 테마
 
 # 2) 실제 Chrome 검수 (Playwright, headless)
 python3 uitest.py
-# → 190 passed, 0 failed
+# → 191 passed, 0 failed
 ```
 
 `uitest.py`가 확인하는 것:

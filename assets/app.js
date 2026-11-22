@@ -272,7 +272,9 @@
     var itemRows = visibleItems.map(function (item) {
       var index = doc.items.indexOf(item);
       var line = totals.lines[index] || { amount: 0 };
-      var qty = item.quantity ? esc(item.quantity) : '';
+      var qtyRaw = String(item.quantity == null ? '' : item.quantity).trim();
+      /* 음수는 0으로 보정해 계산하므로 종이에도 음수를 찍지 않는다. */
+      var qty = !qtyRaw ? '' : (L.isNegativeNumber(qtyRaw) ? String(Math.round(line.quantity) / 1000) : esc(qtyRaw));
       var price = String(item.unitPrice || '').trim() === '' ? '' : money(line.unitPrice);
       return '<tr>' +
         '<td><span class="it-name">' + esc(item.description) + '</span>' +
