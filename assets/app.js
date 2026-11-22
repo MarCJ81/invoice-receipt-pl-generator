@@ -144,11 +144,12 @@
           '<input class="inp details" type="text" data-item="details" aria-label="Item detail ' + (index + 1) + '" placeholder="Optional description" value="' + esc(item.details) + '">' +
         '</div>' +
         '<span class="item-cell"><span class="cell-cap">Qty</span>' +
-          '<input class="inp num" type="text" inputmode="decimal" data-item="quantity" aria-label="Quantity ' + (index + 1) + '" placeholder="1" value="' + esc(item.quantity) + '"></span>' +
+          '<input class="inp num" type="text" inputmode="decimal" data-item="quantity" aria-label="Quantity ' + (index + 1) + '" aria-describedby="item-warn-' + index + '" placeholder="1" value="' + esc(item.quantity) + '"></span>' +
         '<span class="item-cell"><span class="cell-cap">Unit price</span>' +
-          '<input class="inp num" type="text" inputmode="decimal" data-item="unitPrice" aria-label="Unit price ' + (index + 1) + '" placeholder="0.00" value="' + esc(item.unitPrice) + '"></span>' +
+          '<input class="inp num" type="text" inputmode="decimal" data-item="unitPrice" aria-label="Unit price ' + (index + 1) + '" aria-describedby="item-warn-' + index + '" placeholder="0.00" value="' + esc(item.unitPrice) + '"></span>' +
         '<span class="item-amount" data-amount="' + index + '">' + L.formatMoney(totals.lines[0] ? totals.lines[0].amount : 0, cur) + '</span>' +
         '<button type="button" class="item-del" data-del-item="' + index + '" aria-label="Remove item ' + (index + 1) + '"' + (count <= 1 ? ' disabled' : '') + '>&times;</button>' +
+        '<p class="item-warn" id="item-warn-' + index + '" data-item-warn="' + index + '" aria-live="polite" hidden></p>' +
       '</div>';
   }
 
@@ -157,6 +158,49 @@
     body.innerHTML = state.doc.items.map(function (item, index) {
       return itemRow(item, index, state.doc.items.length);
     }).join('');
+    updateItemWarnings();
+  }
+
+  /* --------------------------------------------------- negative input guard */
+
+  var ITEMS_HINT = 'Amounts update as you type.';
+
+  function itemWarningText(field) {
+    return field === 'quantity'
+      ? 'Quantity must be 0 or more — negative numbers are not allowed.'
+      : 'Unit price must be 0 or more — negative numbers are not allowed.';
+  }
+
+  /** Qty·unit price의 음수를 행 단위로 모아 바로 아래에 안내한다. */
+  function updateItemWarnings() {
+    var count = 0;
+    $$('#items-body .item-row').forEach(function (row) {
+      var messages = [];
+      $$('[data-item]', row).forEach(function (input) {
+        var field = input.getAttribute('data-item');
+        if (field !== 'quantity' && field !== 'unitPrice') return;
+        var bad = L.isNegativeNumber(input.value);
+        input.setAttribute('aria-invalid', bad ? 'true' : 'false');
+        input.classList.toggle('is-invalid', bad);
+        if (bad) {
+          count += 1;
+          messages.push(itemWarningText(field));
+        }
+      });
+      var warn = $('[data-item-warn]', row);
+      if (warn) {
+        warn.hidden = !messages.length;
+        warn.textContent = messages.join(' ');
+      }
+    });
+    var hint = $('#items-hint');
+    if (hint) {
+      hint.classList.toggle('is-warn', count > 0);
+      hint.textContent = count
+        ? 'Enter 0 or more in the highlighted fields — negative values are counted as 0.'
+        : ITEMS_HINT;
+    }
+    return count;
   }
 
   function updateItemAmounts() {
@@ -261,7 +305,7 @@
       totalRows += '<tr class="balance"><th>Balance due</th><td>' + money(totals.balance) + '</td></tr>';
     }
 
-    var notesHtml = doc.notes.trim() ? '<div class="p-notes"><h4>Notes</h4>' + esc(doc.notes) + '</div>' : '<div class="p-notes"></div>';
+    var notesHtml = doc.notes.trim() ? '<div class="p-notes"><p class="p-notes-title">Notes</p>' + esc(doc.notes) + '</div>' : '<div class="p-notes"></div>';
     var footerParts = [];
     if (doc.terms.trim()) footerParts.push('<span>' + esc(doc.terms) + '</span>');
     if (from.email) footerParts.push('<span>' + esc(from.email) + '</span>');
@@ -596,6 +640,7 @@
         var row = target.closest('.item-row');
         var index = Number(row.getAttribute('data-idx'));
         state.doc.items[index][field] = target.value;
+        updateItemWarnings();
         renderDocTotals();
       }
     });

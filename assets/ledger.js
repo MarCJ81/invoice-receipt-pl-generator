@@ -164,6 +164,20 @@
     return decimalToUnits(parseDecimal(raw), 3);
   }
 
+  /**
+   * True when a raw quantity/unit-price box holds a negative number.
+   * The editor uses it to warn right under the input before totals clamp it to 0.
+   */
+  function isNegativeNumber(raw) {
+    var text = String(raw == null ? '' : raw)
+      .replace(/[\u2212\u2013\u2014]/g, '-')
+      .replace(/[\s\u00A0]/g, '')
+      .replace(/[,\u20A9$\u20AC\u00A3\u00A5]/g, '');
+    if (!text) return false;
+    var value = Number(text);
+    return isFinite(value) && value < 0;
+  }
+
   /** Percent in rate units: "8.875" -> 88750 (1% = 10000). */
   function parseRate(raw) {
     return decimalToUnits(parseDecimal(raw), 4);
@@ -253,12 +267,18 @@
       if (String(item.quantity == null ? '' : item.quantity).trim() !== '') {
         var parsedQty = parseQuantity(item.quantity);
         if (parsedQty === null) errors.push(label + ': quantity "' + item.quantity + '" is not a number.');
-        else qty = parsedQty;
+        else if (parsedQty < 0) {
+          errors.push(label + ': quantity must be 0 or more — 0 is used instead.');
+          qty = 0;
+        } else qty = parsedQty;
       }
       if (String(item.unitPrice == null ? '' : item.unitPrice).trim() !== '') {
         var parsedPrice = parseAmount(item.unitPrice, currency);
         if (parsedPrice === null) errors.push(label + ': unit price "' + item.unitPrice + '" is not a number.');
-        else price = parsedPrice;
+        else if (parsedPrice < 0) {
+          errors.push(label + ': unit price must be 0 or more — 0 is used instead.');
+          price = 0;
+        } else price = parsedPrice;
       }
 
       var amount = divRound(BigInt(qty) * BigInt(price), BigInt(QTY_UNITS));
@@ -705,6 +725,7 @@
     formatAmount: formatAmount,
     formatMoney: formatMoney,
     formatPercent: formatPercent,
+    isNegativeNumber: isNegativeNumber,
     formatDate: formatDate,
     formatLongDate: formatLongDate,
     todayISO: todayISO,
