@@ -731,6 +731,56 @@
       });
     });
 
+    /* ── PDF · Excel 다운로드(좌표 고정 A4 · 장부용 시트) ── */
+    function busy(id, label, on) {
+      var btn = $(id);
+      if (!btn) return;
+      if (on) {
+        btn.dataset.label = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = label;
+      } else {
+        btn.disabled = false;
+        btn.textContent = btn.dataset.label || btn.textContent;
+      }
+    }
+
+    $('#btn-pdf-doc').addEventListener('click', function () {
+      if (!window.InvoicePDF) { toast('PDF engine is not loaded'); return; }
+      busy('#btn-pdf-doc', 'Building PDF\u2026', true);
+      window.InvoicePDF.exportDoc(state.doc, L, L.computeTotals(state.doc)).then(function (res) {
+        busy('#btn-pdf-doc', '', false);
+        toast(res && res.ok ? 'PDF downloaded \u00b7 ' + res.pages + ' page(s)' : ((res && res.message) || 'PDF failed'));
+      });
+    });
+
+    $('#btn-xlsx-doc').addEventListener('click', function () {
+      if (!window.InvoiceXLSX) { toast('Excel engine is not loaded'); return; }
+      busy('#btn-xlsx-doc', 'Building Excel\u2026', true);
+      window.InvoiceXLSX.exportDoc(state.doc, L, L.computeTotals(state.doc)).then(function (res) {
+        busy('#btn-xlsx-doc', '', false);
+        toast(res && res.ok ? 'Excel downloaded \u00b7 ' + res.sheets.join(', ') : ((res && res.message) || 'Excel failed'));
+      });
+    });
+
+    $('#btn-pdf-pl').addEventListener('click', function () {
+      if (!window.InvoicePDF) { toast('PDF engine is not loaded'); return; }
+      busy('#btn-pdf-pl', 'Building PDF\u2026', true);
+      window.InvoicePDF.exportPnL(state.pl, L, L.computePnL(state.pl)).then(function (res) {
+        busy('#btn-pdf-pl', '', false);
+        toast(res && res.ok ? 'PDF downloaded \u00b7 ' + res.pages + ' page(s)' : ((res && res.message) || 'PDF failed'));
+      });
+    });
+
+    $('#btn-xlsx-pl').addEventListener('click', function () {
+      if (!window.InvoiceXLSX) { toast('Excel engine is not loaded'); return; }
+      busy('#btn-xlsx-pl', 'Building Excel\u2026', true);
+      window.InvoiceXLSX.exportPnL(state.pl, L, L.computePnL(state.pl)).then(function (res) {
+        busy('#btn-xlsx-pl', '', false);
+        toast(res && res.ok ? 'Excel downloaded \u00b7 ' + res.sheets.join(', ') : ((res && res.message) || 'Excel failed'));
+      });
+    });
+
     $('#btn-sample').addEventListener('click', function () {
       state.doc = L.sampleDoc();
       $('#sample-badge').hidden = false;

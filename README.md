@@ -127,3 +127,20 @@ python3 uitest.py
 
 - 대비 4.5:1 이상: 라이트·다크 × 데스크톱/모바일/개인정보 페이지 실측 미달 0건(용지 라벨 포함).
 - 폰트는 자체 호스팅 Inter 그대로(외부 요청 0건).
+
+
+## Second upgrade (2026-11-23)
+
+### Real PDF files — `assets/pdf-export.js` (jsPDF 4.2.1 + AutoTable 5.0.9, MIT)
+- **Download PDF** builds a fixed A4/Letter file with fixed margins and page breaks, instead of relying on the browser print dialog.
+- Amounts come from `ledger.js` (integer minor units, BigInt). The PDF only formats them, so the printed total always matches the on-screen total.
+- Document: header, from/bill-to blocks, item table, subtotal/discount/tax/total/paid/balance rows, notes and page numbers.
+- Covers invoice, receipt and quote, plus the P&L statement (revenue table, expense table, net profit / margin / expense ratio).
+
+### Excel export — `assets/xlsx-export.js` (SheetJS 0.18.5, Apache-2.0)
+- Invoice: `Document` + `Items` sheets. P&L: `Summary` + `Revenue` + `Expenses` sheets.
+- Amounts are written as **numbers**, not text, so spreadsheet totals work.
+- Both libraries load only when a button is pressed (first paint unchanged).
+
+### Verification
+- `node test.js` 57 checks · real Chrome export test (PDF text/amounts, workbook sheet names and numeric cells).
