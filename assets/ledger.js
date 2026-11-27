@@ -208,12 +208,19 @@
     return (value === null ? 0 : value) + '%';
   }
 
+  var LOCALE = 'en';
+  function setLocale(lang) { LOCALE = (lang === 'ko') ? 'ko' : 'en'; }
+  function isKo() { return LOCALE === 'ko'; }
+  function monthShort(n) { return isKo() ? (n + '월') : MONTHS[n - 1]; }
+  function monthLong(n) { return isKo() ? (n + '월') : MONTHS_LONG[n - 1]; }
+
   function formatDate(iso) {
     var s = String(iso || '').trim();
     var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
     if (!m) return s;
     var month = Number(m[2]);
     if (month < 1 || month > 12) return s;
+    if (isKo()) return m[1] + '년 ' + month + '월 ' + Number(m[3]) + '일';
     return MONTHS[month - 1] + ' ' + Number(m[3]) + ', ' + m[1];
   }
 
@@ -223,6 +230,7 @@
     if (!m) return s;
     var month = Number(m[2]);
     if (month < 1 || month > 12) return s;
+    if (isKo()) return m[1] + '년 ' + month + '월 ' + Number(m[3]) + '일';
     return MONTHS_LONG[month - 1] + ' ' + Number(m[3]) + ', ' + m[1];
   }
 
@@ -368,6 +376,12 @@
     var s = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(startISO || ''));
     var e = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(endISO || ''));
     if (!s) return '';
+    if (isKo()) {
+      if (!e) return s[1] + '년 ' + Number(s[2]) + '월';
+      if (s[1] === e[1] && s[2] === e[2]) return s[1] + '년 ' + Number(s[2]) + '월';
+      if (s[1] === e[1]) return s[1] + '년 ' + Number(s[2]) + '월 \u2013 ' + Number(e[2]) + '월';
+      return s[1] + '년 ' + Number(s[2]) + '월 \u2013 ' + e[1] + '년 ' + Number(e[2]) + '월';
+    }
     if (!e) return MONTHS_LONG[Number(s[2]) - 1] + ' ' + s[1];
     if (s[1] === e[1] && s[2] === e[2]) return MONTHS_LONG[Number(s[2]) - 1] + ' ' + s[1];
     if (s[1] === e[1]) return MONTHS[Number(s[2]) - 1] + ' \u2013 ' + MONTHS[Number(e[2]) - 1] + ' ' + s[1];
@@ -727,6 +741,7 @@
     formatPercent: formatPercent,
     isNegativeNumber: isNegativeNumber,
     formatDate: formatDate,
+    setLocale: setLocale,
     formatLongDate: formatLongDate,
     todayISO: todayISO,
     addDays: addDays,
