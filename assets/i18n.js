@@ -18,8 +18,6 @@
     /* ---- shell / head ---- */
     'Free Invoice, Receipt & P&L Generator — Print or Save as PDF': '무료 인보이스·영수증·손익계산서 생성기 — 인쇄하거나 PDF로 저장',
     'Skip to the generator': '생성기로 바로 가기',
-    'Invoice & P&L': '인보이스·손익',
-    'Generator': '생성기',
     'How it works': '쓰는 방법',
     'Features': '기능',
     'Free · No sign-up · Nothing uploaded': '무료 · 가입 없음 · 업로드 없음',
