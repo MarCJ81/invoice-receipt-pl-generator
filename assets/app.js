@@ -19,6 +19,10 @@
 
   /* ------------------------------------------------------------- helpers */
 
+  function t(en) { return (window.OneTapLang && window.OneTapLang.t) ? window.OneTapLang.t(en) : en; }
+  function ko() { return !!(window.OneTapLang && window.OneTapLang.isKo && window.OneTapLang.isKo()); }
+  function tr(en, koText) { return ko() ? koText : en; }
+
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
@@ -140,15 +144,15 @@
     return '' +
       '<div class="item-row" data-idx="' + index + '">' +
         '<div class="item-desc">' +
-          '<input class="inp desc" type="text" data-item="description" aria-label="Item description ' + (index + 1) + '" placeholder="Design work" value="' + esc(item.description) + '">' +
-          '<input class="inp details" type="text" data-item="details" aria-label="Item detail ' + (index + 1) + '" placeholder="Optional description" value="' + esc(item.details) + '">' +
+          '<input class="inp desc" type="text" data-item="description" aria-label="' + t('Item description') + ' ' + (index + 1) + '" placeholder="Design work" value="' + esc(item.description) + '">' +
+          '<input class="inp details" type="text" data-item="details" aria-label="' + t('Item detail') + ' ' + (index + 1) + '" placeholder="Optional description" value="' + esc(item.details) + '">' +
         '</div>' +
         '<span class="item-cell"><span class="cell-cap">Qty</span>' +
-          '<input class="inp num" type="text" inputmode="decimal" data-item="quantity" aria-label="Quantity ' + (index + 1) + '" aria-describedby="item-warn-' + index + '" placeholder="1" value="' + esc(item.quantity) + '"></span>' +
+          '<input class="inp num" type="text" inputmode="decimal" data-item="quantity" aria-label="' + t('Quantity') + ' ' + (index + 1) + '" aria-describedby="item-warn-' + index + '" placeholder="1" value="' + esc(item.quantity) + '"></span>' +
         '<span class="item-cell"><span class="cell-cap">Unit price</span>' +
-          '<input class="inp num" type="text" inputmode="decimal" data-item="unitPrice" aria-label="Unit price ' + (index + 1) + '" aria-describedby="item-warn-' + index + '" placeholder="0.00" value="' + esc(item.unitPrice) + '"></span>' +
+          '<input class="inp num" type="text" inputmode="decimal" data-item="unitPrice" aria-label="' + t('Unit price') + ' ' + (index + 1) + '" aria-describedby="item-warn-' + index + '" placeholder="0.00" value="' + esc(item.unitPrice) + '"></span>' +
         '<span class="item-amount" data-amount="' + index + '">' + L.formatMoney(totals.lines[0] ? totals.lines[0].amount : 0, cur) + '</span>' +
-        '<button type="button" class="item-del" data-del-item="' + index + '" aria-label="Remove item ' + (index + 1) + '"' + (count <= 1 ? ' disabled' : '') + '>&times;</button>' +
+        '<button type="button" class="item-del" data-del-item="' + index + '" aria-label="' + t('Remove item') + ' ' + (index + 1) + '"' + (count <= 1 ? ' disabled' : '') + '>&times;</button>' +
         '<p class="item-warn" id="item-warn-' + index + '" data-item-warn="' + index + '" aria-live="polite" hidden></p>' +
       '</div>';
   }
@@ -288,11 +292,12 @@
     var totalRows = '';
     totalRows += '<tr class="sub"><th>Subtotal</th><td>' + money(totals.subtotal) + '</td></tr>';
     if (totals.discount > 0) {
-      var discountLabel = 'Discount' + (doc.discount.mode === 'percent' && doc.discount.value ? ' (' + esc(String(doc.discount.value).trim()) + '%)' : '');
+      var discountLabel = t('Discount') + (doc.discount.mode === 'percent' && doc.discount.value ? ' (' + esc(String(doc.discount.value).trim()) + '%)' : '');
       totalRows += '<tr><th>' + discountLabel + '</th><td>&minus;' + money(totals.discount) + '</td></tr>';
     }
     if (totals.tax > 0) {
       var taxLabel = (doc.tax.label || 'Tax').trim();
+      if (ko() && (!doc.tax.label || doc.tax.label === 'Tax' || doc.tax.label === 'Sales tax')) taxLabel = '세금';
       var rate = String(doc.tax.rate || '').trim();
       totalRows += '<tr><th>' + esc(taxLabel) + (rate ? ' (' + esc(rate) + '%)' : '') + '</th><td>' + money(totals.tax) + '</td></tr>';
     }
@@ -321,7 +326,7 @@
             '<div class="p-name">' + esc(from.name || 'Your business') + '</div>' +
             fromMeta +
             addressBlock(from.address) +
-            (from.taxId ? '<div class="p-lines">Tax ID: ' + esc(from.taxId) + '</div>' : '') +
+            (from.taxId ? '<div class="p-lines">' + t('Tax ID: ') + esc(from.taxId) + '</div>' : '') +
           '</div>' +
         '</div>' +
         '<div class="p-doctype">' +
@@ -450,10 +455,10 @@
   function revenueRow(row, index) {
     return '' +
       '<div class="pl-row revenue-row" data-idx="' + index + '">' +
-        '<input class="inp" type="text" data-pl="label" aria-label="Revenue line ' + (index + 1) + '" placeholder="Client projects" value="' + esc(row.label) + '">' +
+        '<input class="inp" type="text" data-pl="label" aria-label="' + t('Revenue line') + ' ' + (index + 1) + '" placeholder="Client projects" value="' + esc(row.label) + '">' +
         '<span class="affix-field"><span class="affix" data-pl-currency>' + L.CURRENCIES[state.pl.currency].symbol + '</span>' +
-          '<input class="inp" type="text" inputmode="decimal" data-pl="amount" aria-label="Revenue amount ' + (index + 1) + '" placeholder="0.00" value="' + esc(row.amount) + '"></span>' +
-        '<button type="button" class="item-del" data-del-revenue="' + index + '" aria-label="Remove revenue line ' + (index + 1) + '">&times;</button>' +
+          '<input class="inp" type="text" inputmode="decimal" data-pl="amount" aria-label="' + t('Revenue amount') + ' ' + (index + 1) + '" placeholder="0.00" value="' + esc(row.amount) + '"></span>' +
+        '<button type="button" class="item-del" data-del-revenue="' + index + '" aria-label="' + t('Remove revenue line') + ' ' + (index + 1) + '">&times;</button>' +
       '</div>';
   }
 
@@ -463,11 +468,11 @@
     }).join('');
     return '' +
       '<div class="pl-row" data-idx="' + index + '">' +
-        '<input class="inp" type="text" data-pl="label" aria-label="Expense line ' + (index + 1) + '" placeholder="Figma subscription" value="' + esc(row.label) + '">' +
-        '<select data-pl="category" aria-label="Expense category ' + (index + 1) + '">' + options + '</select>' +
+        '<input class="inp" type="text" data-pl="label" aria-label="' + t('Expense line') + ' ' + (index + 1) + '" placeholder="Figma subscription" value="' + esc(row.label) + '">' +
+        '<select data-pl="category" aria-label="' + t('Expense category') + ' ' + (index + 1) + '">' + options + '</select>' +
         '<span class="affix-field"><span class="affix" data-pl-currency>' + L.CURRENCIES[state.pl.currency].symbol + '</span>' +
-          '<input class="inp" type="text" inputmode="decimal" data-pl="amount" aria-label="Expense amount ' + (index + 1) + '" placeholder="0.00" value="' + esc(row.amount) + '"></span>' +
-        '<button type="button" class="item-del" data-del-expense="' + index + '" aria-label="Remove expense ' + (index + 1) + '">&times;</button>' +
+          '<input class="inp" type="text" inputmode="decimal" data-pl="amount" aria-label="' + t('Expense amount') + ' ' + (index + 1) + '" placeholder="0.00" value="' + esc(row.amount) + '"></span>' +
+        '<button type="button" class="item-del" data-del-expense="' + index + '" aria-label="' + t('Remove expense') + ' ' + (index + 1) + '">&times;</button>' +
       '</div>';
   }
 
@@ -481,7 +486,7 @@
     var empty = $('#chart-empty');
     var meta = $('#chart-meta');
     var categories = summary.categories.filter(function (c) { return c.amount !== 0; });
-    meta.textContent = categories.length + (categories.length === 1 ? ' category' : ' categories');
+    meta.textContent = categories.length + tr(categories.length === 1 ? ' category' : ' categories', '개 분류');
     if (!categories.length) {
       body.innerHTML = '';
       empty.hidden = false;
@@ -747,37 +752,37 @@
 
     $('#btn-pdf-doc').addEventListener('click', function () {
       if (!window.InvoicePDF) { toast('PDF engine is not loaded'); return; }
-      busy('#btn-pdf-doc', 'Building PDF\u2026', true);
+      busy('#btn-pdf-doc', t('Building PDF…'), true);
       window.InvoicePDF.exportDoc(state.doc, L, L.computeTotals(state.doc)).then(function (res) {
         busy('#btn-pdf-doc', '', false);
-        toast(res && res.ok ? 'PDF downloaded \u00b7 ' + res.pages + ' page(s)' : ((res && res.message) || 'PDF failed'));
+        toast(res && res.ok ? tr('PDF downloaded \u00b7 ' + res.pages + ' page(s)', 'PDF ' + res.pages + '쪽 내려받음') : ((res && res.message) || 'PDF failed'));
       });
     });
 
     $('#btn-xlsx-doc').addEventListener('click', function () {
       if (!window.InvoiceXLSX) { toast('Excel engine is not loaded'); return; }
-      busy('#btn-xlsx-doc', 'Building Excel\u2026', true);
+      busy('#btn-xlsx-doc', t('Building Excel…'), true);
       window.InvoiceXLSX.exportDoc(state.doc, L, L.computeTotals(state.doc)).then(function (res) {
         busy('#btn-xlsx-doc', '', false);
-        toast(res && res.ok ? 'Excel downloaded \u00b7 ' + res.sheets.join(', ') : ((res && res.message) || 'Excel failed'));
+        toast(res && res.ok ? tr('Excel downloaded \u00b7 ' + res.sheets.join(', '), 'Excel 내려받음 · ' + res.sheets.join(', ')) : ((res && res.message) || t('Excel failed')));
       });
     });
 
     $('#btn-pdf-pl').addEventListener('click', function () {
       if (!window.InvoicePDF) { toast('PDF engine is not loaded'); return; }
-      busy('#btn-pdf-pl', 'Building PDF\u2026', true);
+      busy('#btn-pdf-pl', t('Building PDF…'), true);
       window.InvoicePDF.exportPnL(state.pl, L, L.computePnL(state.pl)).then(function (res) {
         busy('#btn-pdf-pl', '', false);
-        toast(res && res.ok ? 'PDF downloaded \u00b7 ' + res.pages + ' page(s)' : ((res && res.message) || 'PDF failed'));
+        toast(res && res.ok ? tr('PDF downloaded \u00b7 ' + res.pages + ' page(s)', 'PDF ' + res.pages + '쪽 내려받음') : ((res && res.message) || 'PDF failed'));
       });
     });
 
     $('#btn-xlsx-pl').addEventListener('click', function () {
       if (!window.InvoiceXLSX) { toast('Excel engine is not loaded'); return; }
-      busy('#btn-xlsx-pl', 'Building Excel\u2026', true);
+      busy('#btn-xlsx-pl', t('Building Excel…'), true);
       window.InvoiceXLSX.exportPnL(state.pl, L, L.computePnL(state.pl)).then(function (res) {
         busy('#btn-xlsx-pl', '', false);
-        toast(res && res.ok ? 'Excel downloaded \u00b7 ' + res.sheets.join(', ') : ((res && res.message) || 'Excel failed'));
+        toast(res && res.ok ? tr('Excel downloaded \u00b7 ' + res.sheets.join(', '), 'Excel 내려받음 · ' + res.sheets.join(', ')) : ((res && res.message) || t('Excel failed')));
       });
     });
 
@@ -1034,7 +1039,17 @@
 
   /* ------------------------------------------------------------------ init */
 
+  function relocalize() {
+    if (L.setLocale) L.setLocale(ko() ? 'ko' : 'en');
+    renderAll();
+    syncDocForm();
+    syncPlForm();
+    updateItemWarnings();
+    initTheme();
+  }
+
   function init() {
+    if (L.setLocale) L.setLocale(ko() ? 'ko' : 'en');
     initTheme();
     if (!restoreDraft()) {
       state.doc = L.sampleDoc();
@@ -1047,6 +1062,7 @@
     bindPlForm();
     $('#pl-period').value = 'custom';
     renderAll();
+    document.addEventListener('langchange', relocalize);
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () { requestAnimationFrame(fitAllPapers); });
     }

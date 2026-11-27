@@ -118,6 +118,10 @@
       <a href="#features">Features</a>
       <a href="#faq">FAQ</a>
     </nav>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" class="lang-btn" data-lang="ko" aria-pressed="false">KO</button>
+      <button type="button" class="lang-btn is-on" data-lang="en" aria-pressed="true">EN</button>
+    </div>
     <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch colour theme" aria-pressed="false">
       <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"></circle><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6 6l-1.6-1.6M19.6 19.6L18 18M18 6l1.6-1.6M4.4 19.6L6 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg>
       <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.4A8.4 8.4 0 0 1 9.6 4a8.4 8.4 0 1 0 10.4 10.4z" fill="currentColor"></path></svg>
@@ -130,7 +134,7 @@
     <div class="hero-copy">
       <p class="eyebrow">Free · No sign-up · Nothing uploaded</p>
       <h1>Free invoice, receipt &amp; profit-and-loss generator</h1>
-      <p class="lede">Fill in one form and watch a real A4 page build itself: invoice, paid receipt, quote or a freelancer P&amp;L statement. Amounts, discounts, tax and margins are worked out to the cent, and <b>Print / Save as PDF</b> gives you a clean file with no watermark.</p>
+      <p class="lede" data-ko-html="한 장의 입력 폼만 채우면 실제 A4 문서가 만들어집니다. 인보이스, 결제 완료 영수증, 견적서, 프리랜서 손익계산서까지. 금액·할인·세금·마진은 센트 단위로 계산되고, <b>인쇄 / PDF 저장</b>을 누르면 워터마크 없는 깨끗한 파일이 나옵니다.">Fill in one form and watch a real A4 page build itself: invoice, paid receipt, quote or a freelancer P&amp;L statement. Amounts, discounts, tax and margins are worked out to the cent, and <b>Print / Save as PDF</b> gives you a clean file with no watermark.</p>
       <ul class="hero-badges">
         <li>100% in your browser</li>
         <li>7 currencies</li>
@@ -606,6 +610,7 @@
   <div class="noscript">This generator needs JavaScript. Nothing would be uploaded in any case — all of the work happens on your device.</div>
 </noscript>
 
+<script src="assets/i18n.js"></script>
 <script src="assets/ledger.js"></script>
 <script src="assets/pdf-export.js"></script>
 <script src="assets/xlsx-export.js"></script>
